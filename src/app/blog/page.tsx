@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { siteContent } from '@/data/content';
-import { siteContent } from '@/data/content';
 
 export const metadata = {
   title: 'Blog & Atualizações | Athos',
