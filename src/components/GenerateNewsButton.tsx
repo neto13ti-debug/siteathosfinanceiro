@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 export default function GenerateNewsButton() {
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState<string | null>(null);
   const [message, setMessage] = useState('');
 
   const handleGenerate = async (provider: string) => {
@@ -22,7 +22,7 @@ export default function GenerateNewsButton() {
       } else {
         setMessage(`Erro no ${provider.toUpperCase()}: ${data.error}`);
       }
-    } catch (err) {
+    } catch (err: any) {
       setMessage(`Erro: ${err.message}`);
     } finally {
       setLoading(null);
