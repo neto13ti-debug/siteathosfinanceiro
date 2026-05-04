@@ -57,8 +57,17 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       <article className="section" style={{ paddingTop: '6rem' }}>
         <div className="container" style={{ maxWidth: '800px' }}>
           <div className="animate-fade-in-up">
-            <span style={{ color: 'var(--accent)', fontSize: '0.9rem', fontWeight: 'bold' }}>{displayPost.category}</span>
-            <h1 style={{ fontSize: '2.5rem', margin: '1rem 0 2rem 0', lineHeight: 1.2 }}>{displayPost.title}</h1>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+              <span style={{ color: 'var(--accent)', fontWeight: 'bold', textTransform: 'uppercase' }}>{displayPost.category}</span>
+              <span>•</span>
+              <span>{new Date(displayPost.created_at || new Date()).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
+              <span>•</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: displayPost.source ? '#10b981' : 'var(--accent)' }}></span>
+                {displayPost.source || 'Athos AI'}
+              </span>
+            </div>
+            <h1 style={{ fontSize: '3rem', margin: '0 0 2rem 0', lineHeight: 1.1, fontWeight: 800 }}>{displayPost.title}</h1>
             
             <div style={{ position: 'relative', width: '100%', height: '400px', borderRadius: '16px', overflow: 'hidden', marginBottom: '3rem' }}>
               <Image 
