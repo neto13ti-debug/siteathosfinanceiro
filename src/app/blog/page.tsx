@@ -17,7 +17,9 @@ export default async function Blog() {
     .order('created_at', { ascending: false });
 
   if (error) console.error('Supabase fetch error:', error);
-  const displayPosts = (posts && posts.length > 0) ? posts : siteContent.blog.posts;
+  
+  // Mescla as notícias do banco (Supabase) com as notícias iniciais (siteContent)
+  const displayPosts = [...(posts || []), ...siteContent.blog.posts];
 
   // Função para formatar a data
   const formatDate = (dateString: string) => {
