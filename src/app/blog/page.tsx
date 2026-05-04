@@ -8,6 +8,8 @@ export const metadata = {
   description: 'Novidades do mundo financeiro e próximos treinamentos da Athos Soluções Financeiras.'
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function Blog() {
   const { data: posts, error } = await supabase
     .from('posts')
