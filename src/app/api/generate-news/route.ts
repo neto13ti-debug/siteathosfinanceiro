@@ -1,8 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 import OpenAI from 'openai';
 import { NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
+import { supabase } from '@/lib/supabase';
 
 export async function POST(req: Request) {
   try {
@@ -88,16 +87,15 @@ export async function POST(req: Request) {
 
     const postData = JSON.parse(textResponse.trim());
 
-    // Read existing posts
-    const filePath = path.join(process.cwd(), 'src/data/posts.json');
-    const fileData = await fs.readFile(filePath, 'utf8');
-    const posts = JSON.parse(fileData);
+    // Salva no Supabase
+    const { error: supabaseError } = await supabase
+      .from('posts')
+      .insert([postData]);
 
-    // Add new post to the beginning
-    posts.unshift(postData);
-
-    // Write back to file
-    await fs.writeFile(filePath, JSON.stringify(posts, null, 2));
+    if (supabaseError) {
+      console.error('Supabase Error:', supabaseError);
+      throw new Error(`Erro ao salvar no banco: ${supabaseError.message}`);
+    }
 
     return NextResponse.json({ success: true, post: postData });
   } catch (error: any) {

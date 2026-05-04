@@ -1,13 +1,22 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { siteContent } from '@/data/content';
+import { supabase } from '@/lib/supabase';
 
 export const metadata = {
   title: 'Blog & Atualizações | Athos',
   description: 'Novidades do mundo financeiro e próximos treinamentos da Athos Soluções Financeiras.'
 };
 
-export default function Blog() {
+export default async function Blog() {
+  const { data: posts, error } = await supabase
+    .from('posts')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) console.error('Supabase fetch error:', error);
+  const displayPosts = (posts && posts.length > 0) ? posts : siteContent.blog.posts;
+
   return (
     <main style={{ position: 'relative', overflow: 'clip', minHeight: '100vh' }}>
       <div className="glow-bg"></div>
@@ -31,7 +40,7 @@ export default function Blog() {
 
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem', maxWidth: '1000px', margin: '0 auto' }}>
-            {siteContent.blog.posts.map((post, index) => (
+            {displayPosts.map((post: any, index: number) => (
               <div key={post.id} className={`glass-panel animate-fade-in-up ${index > 0 ? 'delay-1' : ''}`} style={{ display: 'flex', flexDirection: 'column', padding: '1.5rem', gap: '1.5rem', borderRadius: '20px' }}>
                 <div style={{ position: 'relative', width: '100%', height: '220px', borderRadius: '12px', overflow: 'hidden' }}>
                   <Image 
