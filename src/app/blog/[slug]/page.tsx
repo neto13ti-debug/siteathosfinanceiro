@@ -2,14 +2,14 @@ import { siteContent } from '@/data/content';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = siteContent.blog.posts.find(p => p.slug === slug);
   if (!post) return { title: 'Post não encontrado' };
   return { title: `${post.title} | Athos Blog` };
 }
 
-export default async function BlogPost({ params }) {
+export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = siteContent.blog.posts.find(p => p.slug === slug);
 

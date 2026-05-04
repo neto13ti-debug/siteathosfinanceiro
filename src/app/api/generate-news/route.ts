@@ -100,7 +100,7 @@ export async function POST(req: Request) {
     await fs.writeFile(filePath, JSON.stringify(posts, null, 2));
 
     return NextResponse.json({ success: true, post: postData });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error generating news:', error);
     return NextResponse.json({ error: error.message || 'Falha ao gerar notícia' }, { status: 500 });
   }
