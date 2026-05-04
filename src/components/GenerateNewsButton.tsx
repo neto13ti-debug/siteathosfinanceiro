@@ -5,7 +5,7 @@ export default function GenerateNewsButton() {
   const [loading, setLoading] = useState(null);
   const [message, setMessage] = useState('');
 
-  const handleGenerate = async (provider) => {
+  const handleGenerate = async (provider: string) => {
     setLoading(provider);
     setMessage(`Solicitando ao agente ${provider.toUpperCase()}... (pode levar uns segundos)`);
     try {
