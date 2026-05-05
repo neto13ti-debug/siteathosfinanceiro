@@ -5,15 +5,19 @@ import Link from 'next/link';
 import localPosts from '@/data/posts.json';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const { data: post } = await supabase
-    .from('posts')
-    .select('title')
-    .eq('slug', slug)
-    .single();
+  try {
+    const { slug } = await params;
+    const { data: post } = await supabase
+      .from('posts')
+      .select('title')
+      .eq('slug', slug)
+      .maybeSingle();
 
-  if (!post) return { title: 'Post não encontrado' };
-  return { title: `${post.title} | Athos Blog` };
+    if (!post) return { title: 'Post não encontrado | Athos Blog' };
+    return { title: `${post.title} | Athos Blog` };
+  } catch (e) {
+    return { title: 'Blog | Athos Financial' };
+  }
 }
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {

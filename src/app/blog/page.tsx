@@ -3,6 +3,7 @@ import { siteContent } from '@/data/content';
 import { supabase } from '@/lib/supabase';
 import BlogList from '@/components/BlogList';
 import localPosts from '@/data/posts.json';
+import localPosts from '@/data/posts.json';
 
 export const metadata = {
   title: 'Blog & Atualizações | Athos',
@@ -18,7 +19,7 @@ export default async function Blog() {
     .order('created_at', { ascending: false });
 
   // Mescla as notícias de forma segura
-  const initialPosts = [...(posts || []), ...(localPosts || []), ...siteContent.blog.posts];
+  const initialPosts = [...(posts || []), ...(localPosts as any[] || []), ...siteContent.blog.posts];
 
   return (
     <main style={{ position: 'relative', overflow: 'clip', minHeight: '100vh', background: '#0a0f18' }}>
