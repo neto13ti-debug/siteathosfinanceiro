@@ -57,54 +57,52 @@ export default function BlogList({ initialPosts }: { initialPosts: Post[] }) {
   };
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2.5rem' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '3rem' }}>
       {posts.map((post) => (
         <Link 
           href={`/blog/${cleanSlug(post.slug)}`} 
           key={post.id} 
-          className="animate-fade-in-up" 
-          style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column' }}
+          className="blog-card"
+          style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', group: 'true' } as any}
         >
-          <div className="glass-panel" style={{ 
-            padding: '0', 
-            borderRadius: '16px', 
+          <div style={{ 
+            position: 'relative', 
+            width: '100%', 
+            height: '240px', 
+            borderRadius: '20px', 
             overflow: 'hidden', 
-            height: '100%', 
-            display: 'flex', 
-            flexDirection: 'column',
-            transition: 'transform 0.3s ease, border-color 0.3s ease',
-            border: '1px solid rgba(255,255,255,0.05)'
+            marginBottom: '1.5rem',
+            boxShadow: '0 20px 25px -5px rgba(0,0,0,0.3)',
+            background: '#1e293b'
           }}>
-            <div style={{ position: 'relative', width: '100%', height: '200px', background: '#1e293b' }}>
-              <Image 
-                src={post.image?.startsWith('http') ? post.image : 'https://images.unsplash.com/photo-1611974717482-982c7a6b444a?q=80&w=2070&auto=format&fit=crop'} 
-                alt={post.title} 
-                fill 
-                style={{ objectFit: 'cover' }}
-                unoptimized // Evita problemas com domínios não autorizados no Next.js
-              />
-              <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'var(--accent)', color: 'white', padding: '0.2rem 0.8rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 800, textTransform: 'uppercase' }}>
-                {post.category || 'Mercado'}
-              </div>
+            <img 
+              src={post.image?.startsWith('http') ? post.image : 'https://images.unsplash.com/photo-1611974717482-982c7a6b444a?q=80&w=2070&auto=format&fit=crop'} 
+              alt={post.title} 
+              style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
+              className="hover-scale"
+            />
+            <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'var(--accent)', color: '#000', padding: '0.3rem 1rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase' }}>
+              {post.category || 'Mercado'}
+            </div>
+          </div>
+          
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem', fontSize: '0.85rem', color: '#94a3b8' }}>
+              <span>{formatDate(post.created_at || new Date().toISOString())}</span>
+              <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)' }}></span>
+              <span style={{ color: 'var(--accent)', fontWeight: 600 }}>{post.source || 'Suno Notícias'}</span>
             </div>
             
-            <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-                <span>{formatDate(post.created_at || new Date().toISOString())}</span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: post.source ? '#10b981' : 'var(--accent)' }}></span>
-                  {post.source || 'Athos AI'}
-                </span>
-              </div>
-              
-              <h3 style={{ fontSize: '1.4rem', lineHeight: 1.3, marginBottom: '1rem', fontWeight: 700, color: 'var(--text-main)' }}>{post.title}</h3>
-              <p style={{ fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '1.5rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                {post.summary?.replace(/<[^>]*>/g, '')}
-              </p>
-              
-              <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', color: 'var(--accent)', fontWeight: 700, fontSize: '0.9rem' }}>
-                Continuar lendo <span style={{ marginLeft: '0.5rem' }}>→</span>
-              </div>
+            <h3 style={{ fontSize: '1.6rem', lineHeight: 1.2, marginBottom: '1rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit', letterSpacing: '-0.5px' }}>
+              {post.title}
+            </h3>
+            
+            <p style={{ fontSize: '1rem', color: '#64748b', lineHeight: 1.6, marginBottom: '2rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+              {post.summary?.replace(/<[^>]*>/g, '')}
+            </p>
+            
+            <div style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', color: '#fff', fontWeight: 700, fontSize: '0.95rem', borderBottom: '2px solid var(--accent)', paddingBottom: '4px', width: 'fit-content' }}>
+              Ler reportagem &rarr;
             </div>
           </div>
         </Link>

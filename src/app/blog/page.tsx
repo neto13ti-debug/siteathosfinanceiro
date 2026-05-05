@@ -36,14 +36,14 @@ export default async function Blog() {
         </div>
       </nav>
 
-      <section className="section" style={{ paddingTop: '4rem' }}>
+      <section className="section" style={{ paddingTop: '5rem', background: 'linear-gradient(to bottom, #0f172a 0%, #020617 100%)' }}>
         <div className="container">
-          <div style={{ borderLeft: '4px solid var(--accent)', paddingLeft: '1.5rem', marginBottom: '4rem' }}>
-            <h1 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-1px' }}>{siteContent.blog.title}</h1>
-            <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', maxWidth: '600px' }}>{siteContent.blog.subtitle}</p>
+          <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
+            <span style={{ color: 'var(--accent)', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem' }}>Insights Financeiros</span>
+            <h1 style={{ fontSize: '4rem', fontWeight: 900, marginBottom: '1.5rem', letterSpacing: '-2px', color: '#fff', fontFamily: 'Outfit' }}>{siteContent.blog.title}</h1>
+            <p style={{ fontSize: '1.25rem', color: '#94a3b8', maxWidth: '700px', margin: '0 auto', lineHeight: 1.6 }}>{siteContent.blog.subtitle}</p>
           </div>
           
-          {/* O componente BlogList agora cuida do Realtime */}
           <BlogList initialPosts={initialPosts as any} />
         </div>
       </section>
