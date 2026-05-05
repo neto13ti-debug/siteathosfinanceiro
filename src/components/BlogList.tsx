@@ -83,7 +83,7 @@ export default function BlogList({ initialPosts }: { initialPosts: Post[] }) {
             background: '#1e293b'
           }}>
             <img 
-              src={post.image?.startsWith('http') ? post.image : `https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=2070&auto=format&fit=crop&sig=${post.id}`} 
+              src={post.image?.startsWith('http') ? post.image : `https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop&sig=${post.id}`} 
               alt={post.title} 
               style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
               className="hover-scale"
@@ -95,21 +95,21 @@ export default function BlogList({ initialPosts }: { initialPosts: Post[] }) {
           </div>
           
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem', fontSize: '0.85rem', color: '#94a3b8' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem', fontSize: '0.85rem', color: '#64748b' }}>
               <span>{formatDate(post.created_at || new Date().toISOString())}</span>
-              <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)' }}></span>
+              <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'rgba(0,0,0,0.1)' }}></span>
               <span style={{ color: 'var(--accent)', fontWeight: 600 }}>{post.source || 'Suno Notícias'}</span>
             </div>
             
-            <h3 style={{ fontSize: '1.6rem', lineHeight: 1.2, marginBottom: '1rem', fontWeight: 800, color: '#fff', fontFamily: 'Outfit', letterSpacing: '-0.5px' }}>
+            <h3 style={{ fontSize: '1.6rem', lineHeight: 1.2, marginBottom: '1rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', letterSpacing: '-0.5px' }}>
               {post.title}
             </h3>
             
-            <p style={{ fontSize: '1rem', color: '#64748b', lineHeight: 1.6, marginBottom: '2rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+            <p style={{ fontSize: '1rem', color: '#475569', lineHeight: 1.6, marginBottom: '2rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
               {post.summary?.replace(/<[^>]*>/g, '')}
             </p>
             
-            <div style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', color: '#fff', fontWeight: 700, fontSize: '0.95rem', borderBottom: '2px solid var(--accent)', paddingBottom: '4px', width: 'fit-content' }}>
+            <div style={{ marginTop: 'auto', display: 'inline-flex', alignItems: 'center', color: '#0f172a', fontWeight: 700, fontSize: '0.95rem', borderBottom: '2px solid var(--accent)', paddingBottom: '4px', width: 'fit-content' }}>
               Ler reportagem &rarr;
             </div>
           </div>

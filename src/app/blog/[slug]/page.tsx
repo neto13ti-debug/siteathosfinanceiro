@@ -46,13 +46,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     }
 
   return (
-    <main style={{ background: '#020408', color: '#e2e8f0', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }}>
-      <nav style={{ padding: '1rem 0', borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(2, 4, 8, 0.95)', position: 'sticky', top: 0, zIndex: 100, backdropFilter: 'blur(10px)' }}>
+    <main style={{ background: '#fff', color: '#1e293b', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }}>
+      <nav style={{ padding: '1rem 0', borderBottom: '1px solid rgba(0,0,0,0.05)', background: 'rgba(255, 255, 255, 0.95)', position: 'sticky', top: 0, zIndex: 100, backdropFilter: 'blur(10px)' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Link href="/blog" style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.5rem', color: '#fff', display: 'flex', alignItems: 'center' }}>
+          <Link href="/blog" style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.5rem', color: '#0f172a', display: 'flex', alignItems: 'center' }}>
             ATHOS<span style={{ color: 'var(--accent)' }}>.</span><span style={{ fontSize: '0.75rem', opacity: 0.5, marginLeft: '8px', fontWeight: 400, letterSpacing: '2px' }}>PORTAL</span>
           </Link>
-          <Link href="/blog" className="hover-accent" style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 600, transition: 'color 0.3s' }}>&larr; Voltar ao Blog</Link>
+          <Link href="/blog" className="hover-accent" style={{ fontSize: '0.9rem', color: '#64748b', fontWeight: 600, transition: 'color 0.3s' }}>&larr; Voltar ao Blog</Link>
         </div>
       </nav>
 
@@ -67,13 +67,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 <span style={{ opacity: 0.2 }}>•</span>
                 <span style={{ color: '#64748b' }}>{new Date(displayPost.created_at || new Date()).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
               </div>
-              <h1 style={{ fontSize: '3.8rem', lineHeight: 1.05, fontWeight: 900, marginBottom: '2.5rem', letterSpacing: '-3px', color: '#fff', fontFamily: 'Outfit' }}>
+              <h1 style={{ fontSize: '3.8rem', lineHeight: 1.05, fontWeight: 900, marginBottom: '2.5rem', letterSpacing: '-3px', color: '#0f172a', fontFamily: 'Outfit' }}>
                 {displayPost.title}
               </h1>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.02)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '1.5rem', borderRadius: '16px', background: '#f8fafc', border: '1px solid #f1f5f9' }}>
                 <div style={{ width: '45px', height: '45px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent) 0%, #d97706 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, color: '#000', fontSize: '1.2rem' }}>A</div>
                 <div>
-                  <div style={{ fontSize: '1rem', fontWeight: 700, color: '#fff' }}>{displayPost.source || 'Suno Notícias'}</div>
+                  <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>{displayPost.source || 'Suno Notícias'}</div>
                   <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Análise Financial Athos</div>
                 </div>
               </div>
@@ -87,21 +87,37 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               />
             </div>
 
-            <div style={{ fontSize: '1.25rem', lineHeight: 1.9, color: '#cbd5e1', maxWidth: '100%' }}>
+            <div style={{ fontSize: '1.3rem', lineHeight: 2, color: '#334155', maxWidth: '100%', textAlign: 'justify' }}>
               <div 
                 className="post-content-portal"
                 style={{ textAlign: 'justify' }}
                 dangerouslySetInnerHTML={{ 
-                  __html: displayPost.content?.replace(/Foto:/g, '<br/><br/><span style="opacity: 0.6; font-size: 0.9rem; font-style: italic;">Foto:</span>').replace(/Divulgação\//g, 'Divulgação/</span><br/><br/>')
+                  __html: displayPost.content
+                    ?.replace(/Foto:/g, '<br/><br/><div style="background: #f1f5f9; padding: 10px 20px; border-radius: 8px; font-size: 0.9rem; color: #64748b; font-style: italic; margin-bottom: 30px;">Foto:')
+                    .replace(/Divulgação\//g, 'Divulgação/</div><br/>')
+                    .replace(/<p>/g, '<p style="margin-bottom: 2.5rem;">')
                 }} 
               />
+            </div>
+            
+            {/* Espaço para Propaganda no Meio do Texto */}
+            <div style={{ margin: '4rem 0', padding: '2rem', background: '#f8fafc', border: '2px dashed #e2e8f0', borderRadius: '16px', textAlign: 'center' }}>
+              <span style={{ fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '1px' }}>Publicidade</span>
+              <div style={{ height: '150px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontWeight: 600 }}>Seu Banner AdSense Aqui</div>
             </div>
           </article>
 
           {/* Coluna Lateral: Sidebar */}
           <aside style={{ position: 'sticky', top: '7rem' }}>
-            <div style={{ padding: '2.5rem', borderRadius: '24px', border: '1px solid rgba(255,255,255,0.05)', background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.4) 0%, rgba(2, 4, 8, 0.6) 100%)', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, marginBottom: '2rem', color: '#fff', textTransform: 'uppercase', letterSpacing: '2px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ padding: '2.5rem', borderRadius: '24px', border: '1px solid #f1f5f9', background: '#fff', boxShadow: '0 20px 40px rgba(0,0,0,0.05)' }}>
+              
+              {/* Espaço para Propaganda Lateral */}
+              <div style={{ marginBottom: '3rem', padding: '1rem', background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '12px', textAlign: 'center' }}>
+                <span style={{ fontSize: '0.6rem', color: '#94a3b8' }}>AD</span>
+                <div style={{ height: '250px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', fontSize: '0.8rem' }}>Anúncio Lateral</div>
+              </div>
+
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, marginBottom: '2rem', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '2px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <span style={{ width: '12px', height: '2px', background: 'var(--accent)' }}></span>
                 Relacionados
               </h3>
@@ -132,21 +148,21 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       </div>
 
       {/* Rodapé do Portal */}
-      <footer style={{ background: '#010204', padding: '5rem 0', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <footer style={{ background: '#f8fafc', padding: '5rem 0', borderTop: '1px solid #e2e8f0' }}>
         <div className="container" style={{ textAlign: 'center' }}>
-          <div style={{ fontFamily: 'Outfit', fontWeight: 900, fontSize: '2rem', color: '#fff', marginBottom: '2rem' }}>
+          <div style={{ fontFamily: 'Outfit', fontWeight: 900, fontSize: '2rem', color: '#0f172a', marginBottom: '2rem' }}>
             ATHOS<span style={{ color: 'var(--accent)' }}>.</span>
           </div>
-          <p style={{ color: '#475569', maxWidth: '500px', margin: '0 auto 3rem auto', lineHeight: 1.6 }}>
+          <p style={{ color: '#64748b', maxWidth: '500px', margin: '0 auto 3rem auto', lineHeight: 1.6 }}>
             Inteligência financeira para empresas que buscam alta performance e crescimento sustentável.
           </p>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', fontSize: '0.9rem', color: '#94a3b8' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '3rem', fontSize: '0.9rem', color: '#475569' }}>
             <Link href="/">Home</Link>
             <Link href="/blog">Blog</Link>
             <Link href="/#servicos">Soluções</Link>
             <Link href="/#contato">Contato</Link>
           </div>
-          <div style={{ marginTop: '4rem', fontSize: '0.8rem', color: '#1e293b' }}>
+          <div style={{ marginTop: '4rem', fontSize: '0.8rem', color: '#94a3b8' }}>
             © {new Date().getFullYear()} Athos Financial Gestão e BPO. Todos os direitos reservados.
           </div>
         </div>
