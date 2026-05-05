@@ -1,8 +1,6 @@
 import { siteContent } from '@/data/content';
 import { supabase } from '@/lib/supabase';
-import Image from 'next/image';
 import Link from 'next/link';
-import BlogList from '@/components/BlogList';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   try {
@@ -85,7 +83,6 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                 src={displayPost.image?.includes('http') ? displayPost.image : 'https://images.unsplash.com/photo-1611974717482-982c7a6b444a?q=80&w=2070&auto=format&fit=crop'} 
                 alt={displayPost.title} 
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-                onError={(e: any) => e.target.src = 'https://images.unsplash.com/photo-1611974717482-982c7a6b444a?q=80&w=2070&auto=format&fit=crop'}
               />
             </div>
 
