@@ -23,12 +23,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   try {
     const { slug } = await params;
-    // Tenta buscar no Supabase de forma simplificada para evitar timeout
+    // Tenta buscar no Supabase ignorando o prefixo "suno-"
     const decodedSlug = decodeURIComponent(slug);
+    const cleanTerm = decodedSlug.replace(/suno-/g, '').split('-')[0]; // Pega a primeira palavra real da notícia
+    
     const { data: post } = await supabase
       .from('posts')
       .select('*')
-      .or(`slug.eq.${decodedSlug},title.ilike.%${decodedSlug.split('-')[0]}%`)
+      .or(`slug.eq."${decodedSlug}",title.ilike.%${cleanTerm}%`)
+      .limit(1)
       .maybeSingle();
 
     // Fallback para o conteúdo principal do site
