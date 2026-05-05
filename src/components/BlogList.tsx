@@ -76,11 +76,11 @@ export default function BlogList({ initialPosts }: { initialPosts: Post[] }) {
             background: '#1e293b'
           }}>
             <img 
-              src={post.image?.startsWith('http') ? post.image : 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=2070&auto=format&fit=crop'} 
+              src={post.image?.startsWith('http') ? post.image : `https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=2070&auto=format&fit=crop&sig=${post.id}`} 
               alt={post.title} 
               style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
               className="hover-scale"
-              onError={(e: any) => e.target.src = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop'}
+              onError={(e: any) => e.target.src = `https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop&sig=${post.id}`}
             />
             <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'var(--accent)', color: '#000', padding: '0.3rem 1rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase' }}>
               {post.category || 'Mercado'}
