@@ -1,6 +1,7 @@
 import { siteContent } from '@/data/content';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
+import BlogImage from '@/components/BlogImage';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   try {
@@ -79,18 +80,20 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </header>
 
             <div style={{ position: 'relative', width: '100%', height: '500px', borderRadius: '28px', overflow: 'hidden', marginBottom: '4rem', boxShadow: '0 40px 80px -20px rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.05)' }}>
-              <img 
-                src={displayPost.image?.includes('http') ? displayPost.image : 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop'} 
+              <BlogImage 
+                src={displayPost.image} 
                 alt={displayPost.title} 
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                fallback={`https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop&sig=${displayPost.id}`}
               />
             </div>
 
-            <div style={{ fontSize: '1.25rem', lineHeight: 1.9, color: '#cbd5e1', maxWidth: '100%', textAlign: 'justify' }}>
-              {/* Removido o resumo duplicado para fluidez de leitura */}
+            <div style={{ fontSize: '1.25rem', lineHeight: 1.9, color: '#cbd5e1', maxWidth: '100%' }}>
               <div 
                 className="post-content-portal"
-                dangerouslySetInnerHTML={{ __html: displayPost.content }} 
+                style={{ textAlign: 'justify' }}
+                dangerouslySetInnerHTML={{ 
+                  __html: displayPost.content?.replace(/Foto:/g, '<br/><br/><span style="opacity: 0.6; font-size: 0.9rem; font-style: italic;">Foto:</span>').replace(/Divulgação\//g, 'Divulgação/</span><br/><br/>')
+                }} 
               />
             </div>
           </article>
