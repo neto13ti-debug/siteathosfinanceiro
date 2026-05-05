@@ -18,14 +18,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   
-  // Tenta buscar no Supabase de forma inteligente
+  // Tenta buscar no Supabase de forma ultra-segura
   const decodedSlug = decodeURIComponent(slug);
-  const searchPattern = decodedSlug.replace(/suno-/g, '').replace(/-/g, '%').replace(/\s+/g, '%');
+  const cleanSearch = decodedSlug.replace(/suno-/g, '').replace(/[^a-zA-Z0-9]/g, ' ').trim().split(' ')[0]; // Pega a primeira palavra importante
   
   const { data: post } = await supabase
     .from('posts')
     .select('*')
-    .or(`slug.ilike.%${decodedSlug}%,title.ilike.%${searchPattern}%`)
+    .or(`slug.ilike.%${cleanSearch}%,title.ilike.%${cleanSearch}%`)
     .limit(1)
     .maybeSingle();
 
