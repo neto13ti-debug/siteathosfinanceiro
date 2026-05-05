@@ -2,7 +2,7 @@ import { siteContent } from '@/data/content';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
-import { BlogList } from '@/components/BlogList';
+import BlogList from '@/components/BlogList';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   try {
