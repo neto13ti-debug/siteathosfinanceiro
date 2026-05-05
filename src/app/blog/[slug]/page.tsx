@@ -2,7 +2,7 @@ import { siteContent } from '@/data/content';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
-import localPosts from '@/data/posts.json';
+import { BlogList } from '@/components/BlogList';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   try {
@@ -35,10 +35,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       .limit(1)
       .maybeSingle();
 
-    // Fallback para o JSON se não encontrar no banco
-    const displayPost = post || 
-                       (localPosts as any[]).find(p => p.slug === slug) || 
-                       siteContent.blog.posts.find(p => p.slug === slug);
+    // Fallback para o conteúdo principal do site
+    const displayPost = post || siteContent.blog.posts.find(p => p.slug === slug);
 
     if (!displayPost) {
       return (
