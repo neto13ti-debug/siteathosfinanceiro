@@ -18,16 +18,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   
-  // Tenta buscar no Supabase (limpando o slug para busca mais flexível)
+  // Tenta buscar no Supabase de forma segura
   const decodedSlug = decodeURIComponent(slug);
-  const searchTitle = decodedSlug.replace(/suno-/g, '').replace(/-/g, ' ').trim();
   
   const { data: post } = await supabase
     .from('posts')
     .select('*')
-    .or(`slug.eq."${decodedSlug}",slug.eq."${slug}",title.ilike.%${searchTitle}%`)
-    .limit(1)
-    .single();
+    .or(`slug.eq.${decodedSlug},slug.eq.${slug}`)
+    .maybeSingle();
 
   // Fallback para o JSON se não encontrar no banco
   const displayPost = post || siteContent.blog.posts.find(p => p.slug === slug);
