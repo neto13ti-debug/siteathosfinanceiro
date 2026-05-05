@@ -101,11 +101,11 @@ export default function BlogList({ initialPosts }: { initialPosts: Post[] }) {
               <span style={{ color: 'var(--accent)', fontWeight: 600 }}>{post.source || 'Suno Notícias'}</span>
             </div>
             
-            <h3 style={{ fontSize: '1.6rem', lineHeight: 1.2, marginBottom: '1rem', fontWeight: 800, color: '#0f172a', fontFamily: 'Outfit', letterSpacing: '-0.5px' }}>
+            <h3 style={{ fontSize: '1.6rem', lineHeight: 1.2, marginBottom: '1rem', fontWeight: 800, color: '#000000', fontFamily: 'Outfit', letterSpacing: '-0.5px' }}>
               {post.title}
             </h3>
             
-            <p style={{ fontSize: '1rem', color: '#475569', lineHeight: 1.6, marginBottom: '2rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+            <p style={{ fontSize: '1rem', color: '#1e293b', lineHeight: 1.6, marginBottom: '2rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
               {post.summary?.replace(/<[^>]*>/g, '')}
             </p>
             

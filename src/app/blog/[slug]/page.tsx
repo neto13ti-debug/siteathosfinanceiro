@@ -3,6 +3,8 @@ import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import BlogImage from '@/components/BlogImage';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   try {
     const { slug } = await params;
@@ -73,8 +75,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               <div style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '1.5rem', borderRadius: '16px', background: '#f8fafc', border: '1px solid #f1f5f9' }}>
                 <div style={{ width: '45px', height: '45px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent) 0%, #d97706 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, color: '#000', fontSize: '1.2rem' }}>A</div>
                 <div>
-                  <div style={{ fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>{displayPost.source || 'Suno Notícias'}</div>
-                  <div style={{ fontSize: '0.8rem', color: '#64748b' }}>Análise Financial Athos</div>
+                  <div style={{ fontSize: '1rem', fontWeight: 700, color: '#000000' }}>{displayPost.source || 'Suno Notícias'}</div>
+                  <div style={{ fontSize: '0.8rem', color: '#475569', fontWeight: 600 }}>Análise Financial Athos</div>
                 </div>
               </div>
             </header>
@@ -87,7 +89,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               />
             </div>
 
-            <div style={{ fontSize: '1.3rem', lineHeight: 2, color: '#334155', maxWidth: '100%', textAlign: 'justify' }}>
+            <div style={{ fontSize: '1.3rem', lineHeight: 2, color: '#1e293b', maxWidth: '100%', textAlign: 'justify' }}>
               <div 
                 className="post-content-portal"
                 style={{ textAlign: 'justify' }}
@@ -112,9 +114,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             <div style={{ padding: '2.5rem', borderRadius: '24px', border: '1px solid #f1f5f9', background: '#fff', boxShadow: '0 20px 40px rgba(0,0,0,0.05)' }}>
               
               {/* Espaço para Propaganda Lateral */}
-              <div style={{ marginBottom: '3rem', padding: '1rem', background: '#f8fafc', border: '1px solid #f1f5f9', borderRadius: '12px', textAlign: 'center' }}>
-                <span style={{ fontSize: '0.6rem', color: '#94a3b8' }}>AD</span>
-                <div style={{ height: '250px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#cbd5e1', fontSize: '0.8rem' }}>Anúncio Lateral</div>
+              <div style={{ marginBottom: '3rem', padding: '1rem', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '12px', textAlign: 'center' }}>
+                <span style={{ fontSize: '0.6rem', color: '#64748b', fontWeight: 800 }}>AD</span>
+                <div style={{ height: '250px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#475569', fontSize: '0.8rem', fontWeight: 600 }}>Anúncio Lateral</div>
               </div>
 
               <h3 style={{ fontSize: '1.1rem', fontWeight: 900, marginBottom: '2rem', color: '#0f172a', textTransform: 'uppercase', letterSpacing: '2px', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -127,10 +129,14 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
                   .slice(0, 3)
                   .map(related => (
                     <Link href={`/blog/${related.slug}`} key={related.id} className="sidebar-item" style={{ display: 'flex', gap: '1.2rem', alignItems: 'center', textDecoration: 'none' }}>
-                      <div style={{ width: '90px', height: '90px', flexShrink: 0, borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
-                        <img src={related.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <div style={{ width: '90px', height: '90px', flexShrink: 0, borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.05)', background: '#f1f5f9' }}>
+                        <BlogImage 
+                          src={related.image} 
+                          alt="" 
+                          fallback="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop"
+                        />
                       </div>
-                      <h4 style={{ fontSize: '1rem', lineHeight: 1.4, fontWeight: 700, color: '#f1f5f9', margin: 0 }}>{related.title}</h4>
+                      <div style={{ fontSize: '1rem', lineHeight: 1.4, fontWeight: 700, color: '#0f172a', margin: 0 }}>{related.title}</div>
                     </Link>
                   ))
                 }

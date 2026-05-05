@@ -316,6 +316,11 @@ a {
   animation: pan-watermark 120s linear infinite;
 }
 
+.sidebar-item * {
+  color: #0f172a !important;
+  opacity: 1 !important;
+}
+
 @keyframes pan-watermark {
   0% { transform: translate(0, 0); }
   100% { transform: translate(150px, 150px); }
