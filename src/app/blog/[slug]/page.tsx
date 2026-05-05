@@ -23,16 +23,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   try {
     const { slug } = await params;
-    
-    // Tenta buscar no Supabase de forma ultra-segura
+    // Tenta buscar no Supabase de forma simplificada para evitar timeout
     const decodedSlug = decodeURIComponent(slug);
-    const cleanSearch = decodedSlug.replace(/suno-/g, '').replace(/[^a-zA-Z0-9]/g, ' ').trim().split(' ')[0];
-    
     const { data: post } = await supabase
       .from('posts')
       .select('*')
-      .or(`slug.ilike.%${cleanSearch}%,title.ilike.%${cleanSearch}%`)
-      .limit(1)
+      .or(`slug.eq.${decodedSlug},title.ilike.%${decodedSlug.split('-')[0]}%`)
       .maybeSingle();
 
     // Fallback para o conteúdo principal do site
