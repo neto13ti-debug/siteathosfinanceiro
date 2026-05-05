@@ -10,8 +10,20 @@ export const supabase = (supabaseUrl && supabaseAnonKey)
       from: () => ({
         select: () => ({
           order: () => Promise.resolve({ data: [], error: null }),
-          eq: () => ({ single: () => Promise.resolve({ data: null, error: null }), maybeSingle: () => Promise.resolve({ data: null, error: null }) }),
-          or: () => ({ limit: () => ({ maybeSingle: () => Promise.resolve({ data: null, error: null }) }) }),
+          eq: () => ({ 
+            single: () => Promise.resolve({ data: null, error: null }), 
+            maybeSingle: () => Promise.resolve({ data: null, error: null }) 
+          }),
+          or: () => ({ 
+            limit: () => ({ maybeSingle: () => Promise.resolve({ data: null, error: null }) }) 
+          }),
         }),
       }),
+      channel: () => ({
+        on: () => ({
+          subscribe: () => ({})
+        }),
+        subscribe: () => ({})
+      }),
+      removeChannel: () => ({})
     } as any;
