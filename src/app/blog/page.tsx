@@ -18,8 +18,9 @@ export default async function Blog() {
 
   if (error) console.error('Supabase fetch error:', error);
   
-  // Mescla as notícias do banco (Supabase) com as notícias iniciais (siteContent)
-  const initialPosts = [...(posts || []), ...siteContent.blog.posts];
+  // Mescla as notícias do banco (Supabase) com as notícias locais
+  const { blogPosts } = require('@/data/posts.json'); // Usando require para simplificar se necessário, ou ajuste conforme seu import
+  const initialPosts = [...(posts || []), ...(blogPosts || siteContent.blog.posts)];
 
   return (
     <main style={{ position: 'relative', overflow: 'clip', minHeight: '100vh', background: '#0a0f18' }}>

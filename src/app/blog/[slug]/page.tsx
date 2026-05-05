@@ -18,11 +18,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   
-  // Tenta buscar no Supabase
+  // Tenta buscar no Supabase (limpando o slug para busca mais flexível)
+  const decodedSlug = decodeURIComponent(slug);
+  const searchTitle = decodedSlug.replace(/suno-/g, '').replace(/-/g, ' ').trim();
+  
   const { data: post } = await supabase
     .from('posts')
     .select('*')
-    .eq('slug', slug)
+    .or(`slug.eq."${decodedSlug}",slug.eq."${slug}",title.ilike.%${searchTitle}%`)
+    .limit(1)
     .single();
 
   // Fallback para o JSON se não encontrar no banco
@@ -69,12 +73,13 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
             </div>
             <h1 style={{ fontSize: '3rem', margin: '0 0 2rem 0', lineHeight: 1.1, fontWeight: 800 }}>{displayPost.title}</h1>
             
-            <div style={{ position: 'relative', width: '100%', height: '400px', borderRadius: '16px', overflow: 'hidden', marginBottom: '3rem' }}>
+            <div style={{ position: 'relative', width: '100%', height: '400px', borderRadius: '16px', overflow: 'hidden', marginBottom: '3rem', background: '#1e293b' }}>
               <Image 
-                src={displayPost.image} 
+                src={displayPost.image?.startsWith('http') ? displayPost.image : 'https://images.unsplash.com/photo-1611974717482-982c7a6b444a?q=80&w=2070&auto=format&fit=crop'} 
                 alt={displayPost.title} 
                 fill 
                 style={{ objectFit: 'cover' }} 
+                unoptimized
               />
             </div>
             
