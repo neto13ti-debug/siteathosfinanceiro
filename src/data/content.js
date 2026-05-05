@@ -88,5 +88,13 @@ export const siteContent = {
     title: "O Portal da Inteligência Financeira",
     subtitle: "Insights diários, análises profundas do mercado e estratégias para manter sua empresa um passo à frente da concorrência.",
     posts: postsData
+  },
+  promo: {
+    show: true,
+    title: "Mestre do BPO Financeiro: Novas Vagas Abertas",
+    subtitle: "Aprenda a profissão que está dominando o mercado e transforme sua carreira com nossa metodologia exclusiva.",
+    cta: "Quero me Inscrever",
+    link: "https://wa.me/5582994010039?text=Quero saber mais sobre o curso de BPO.",
+    badge: "Oportunidade Única"
   }
 };

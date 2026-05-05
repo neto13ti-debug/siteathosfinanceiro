@@ -72,6 +72,34 @@ export default function Home() {
           ))}
         </div>
       </div>
+      
+      {/* Promo Banner Section (Estilo Suno / Infomoney) */}
+      {siteContent.promo.show && (
+        <section style={{ background: '#020617', padding: '4rem 0', borderTop: '1px solid rgba(245, 158, 11, 0.2)', borderBottom: '1px solid rgba(245, 158, 11, 0.2)', position: 'relative', overflow: 'hidden' }}>
+          {/* Luz de fundo para o Banner */}
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '600px', height: '200px', background: 'rgba(245, 158, 11, 0.1)', filter: 'blur(100px)', zIndex: 0 }}></div>
+          
+          <div className="container" style={{ position: 'relative', zIndex: 1, display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '2rem' }}>
+            <div style={{ flex: '1', minWidth: '300px' }}>
+              <span style={{ background: 'var(--accent)', color: '#000', padding: '4px 12px', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '1.5rem', display: 'inline-block' }}>
+                {siteContent.promo.badge}
+              </span>
+              <h2 style={{ fontSize: '2.5rem', fontWeight: 900, marginBottom: '1rem', color: '#fff', letterSpacing: '-1px' }}>
+                {siteContent.promo.title}
+              </h2>
+              <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', maxWidth: '600px' }}>
+                {siteContent.promo.subtitle}
+              </p>
+            </div>
+            
+            <div style={{ flexShrink: 0 }}>
+              <a href={siteContent.promo.link} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '1.2rem 3rem', fontSize: '1.1rem', background: '#fff', color: '#000', boxShadow: '0 10px 30px rgba(255,255,255,0.1)' }}>
+                {siteContent.promo.cta} &rarr;
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* About Section */}
       <section id="sobre" className="section" style={{ background: 'rgba(15, 23, 42, 0.5)' }}>
@@ -198,6 +226,29 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section (Novo) */}
+      <section className="section" style={{ position: 'relative' }}>
+        <div className="container">
+          <div className="card-premium" style={{ padding: '5rem', textAlign: 'center', background: 'linear-gradient(135deg, #0f172a 0%, #020617 100%)', border: '1px solid rgba(245, 158, 11, 0.2)' }}>
+            <h2 style={{ fontSize: '3rem', fontWeight: 900, marginBottom: '1.5rem', fontFamily: 'Outfit' }}>
+              Mantenha sua empresa <span className="text-gradient">Atualizada</span>
+            </h2>
+            <p style={{ fontSize: '1.2rem', color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto 3rem auto' }}>
+              Receba nossa curadoria semanal com as notícias que realmente impactam o seu bolso e a gestão do seu negócio.
+            </p>
+            <form style={{ display: 'flex', gap: '1rem', maxWidth: '600px', margin: '0 auto', flexWrap: 'wrap' }}>
+              <input 
+                type="email" 
+                placeholder="Seu melhor e-mail" 
+                style={{ flex: 1, padding: '1.2rem 2rem', borderRadius: '50px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '1.1rem', outline: 'none' }}
+              />
+              <button type="button" className="btn btn-primary" style={{ padding: '1.2rem 3rem' }}>Assinar Agora</button>
+            </form>
+            <p style={{ marginTop: '2rem', fontSize: '0.8rem', color: 'rgba(255,255,255,0.3)' }}>Respeitamos sua privacidade. Saia da lista quando quiser.</p>
           </div>
         </div>
       </section>
