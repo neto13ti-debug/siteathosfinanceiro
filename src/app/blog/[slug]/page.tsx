@@ -2,6 +2,7 @@ import { siteContent } from '@/data/content';
 import { supabase } from '@/lib/supabase';
 import Image from 'next/image';
 import Link from 'next/link';
+import localPosts from '@/data/posts.json';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -16,32 +17,33 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  
-  // Tenta buscar no Supabase de forma ultra-segura
-  const decodedSlug = decodeURIComponent(slug);
-  const cleanSearch = decodedSlug.replace(/suno-/g, '').replace(/[^a-zA-Z0-9]/g, ' ').trim().split(' ')[0]; // Pega a primeira palavra importante
-  
-  const { data: post } = await supabase
-    .from('posts')
-    .select('*')
-    .or(`slug.ilike.%${cleanSearch}%,title.ilike.%${cleanSearch}%`)
-    .limit(1)
-    .maybeSingle();
+  try {
+    const { slug } = await params;
+    
+    // Tenta buscar no Supabase de forma ultra-segura
+    const decodedSlug = decodeURIComponent(slug);
+    const cleanSearch = decodedSlug.replace(/suno-/g, '').replace(/[^a-zA-Z0-9]/g, ' ').trim().split(' ')[0];
+    
+    const { data: post } = await supabase
+      .from('posts')
+      .select('*')
+      .or(`slug.ilike.%${cleanSearch}%,title.ilike.%${cleanSearch}%`)
+      .limit(1)
+      .maybeSingle();
 
-  // Fallback para o JSON se não encontrar no banco
-  const displayPost = post || siteContent.blog.posts.find(p => p.slug === slug);
+    // Fallback para o JSON se não encontrar no banco
+    const displayPost = post || 
+                       (localPosts as any[]).find(p => p.slug === slug) || 
+                       siteContent.blog.posts.find(p => p.slug === slug);
 
-  if (!displayPost) {
-    return (
-      <main style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ textAlign: 'center' }}>
-          <h1>Post não encontrado</h1>
-          <Link href="/blog" className="btn btn-primary" style={{ marginTop: '1rem', display: 'inline-block' }}>Voltar ao Blog</Link>
-        </div>
-      </main>
-    );
-  }
+    if (!displayPost) {
+      return (
+        <main style={{ background: '#020408', color: '#fff', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+          <h2 style={{ fontSize: '2rem', marginBottom: '2rem' }}>Post não encontrado</h2>
+          <Link href="/blog" className="btn btn-primary" style={{ padding: '1rem 2rem', background: 'var(--accent)', color: '#000', borderRadius: '12px', fontWeight: 800 }}>Voltar ao Blog</Link>
+        </main>
+      );
+    }
 
   return (
     <main style={{ background: '#020408', color: '#e2e8f0', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }}>
@@ -149,5 +151,14 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         </div>
       </footer>
     </main>
-  );
+    );
+  } catch (error) {
+    console.error('Global Blog Error:', error);
+    return (
+      <main style={{ background: '#020408', color: '#fff', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+        <h2 style={{ fontSize: '1.5rem', marginBottom: '2rem', opacity: 0.7 }}>Ocorreu um erro ao carregar esta notícia.</h2>
+        <Link href="/blog" style={{ color: 'var(--accent)', fontWeight: 700 }}>Voltar para a lista de notícias</Link>
+      </main>
+    );
+  }
 }

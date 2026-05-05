@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { siteContent } from '@/data/content';
 import { supabase } from '@/lib/supabase';
 import BlogList from '@/components/BlogList';
+import localPosts from '@/data/posts.json';
 
 export const metadata = {
   title: 'Blog & Atualizações | Athos',
@@ -16,20 +17,8 @@ export default async function Blog() {
     .select('*')
     .order('created_at', { ascending: false });
 
-  if (error) console.error('Supabase fetch error:', error);
-  
-  // Mescla as notícias do banco (Supabase) com as notícias locais de forma segura
-  let staticPosts = siteContent.blog.posts;
-  try {
-    const localPosts = require('../../../src/data/posts.json');
-    if (Array.isArray(localPosts)) {
-      staticPosts = [...localPosts, ...staticPosts];
-    }
-  } catch (e) {
-    console.error('Erro ao carregar posts locais:', e);
-  }
-
-  const initialPosts = [...(posts || []), ...staticPosts];
+  // Mescla as notícias de forma segura
+  const initialPosts = [...(posts || []), ...(localPosts || []), ...siteContent.blog.posts];
 
   return (
     <main style={{ position: 'relative', overflow: 'clip', minHeight: '100vh', background: '#0a0f18' }}>
