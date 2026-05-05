@@ -44,88 +44,91 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
   }
 
   return (
-    <main style={{ position: 'relative', overflow: 'clip', minHeight: '100vh' }}>
-      <div className="glow-bg"></div>
-      
-      <nav style={{ padding: '1.5rem 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+    <main style={{ background: '#0a0f18', color: '#f8fafc', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }}>
+      <nav style={{ padding: '1rem 0', borderBottom: '1px solid rgba(255,255,255,0.1)', background: '#0a0f18', position: 'sticky', top: 0, zIndex: 100 }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.5rem', color: 'var(--text-main)' }}>
-            <Link href="/">ATHOS<span style={{ color: 'var(--accent)' }}>.</span></Link>
-          </div>
-          <div style={{ display: 'flex', gap: '2rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-            <Link href="/blog">Voltar ao Blog</Link>
-          </div>
+          <Link href="/blog" style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.5rem', color: '#fff' }}>
+            ATHOS<span style={{ color: 'var(--accent)' }}>.</span><span style={{ fontSize: '0.8rem', opacity: 0.6, marginLeft: '8px', fontWeight: 400 }}>PORTAL</span>
+          </Link>
+          <Link href="/blog" style={{ fontSize: '0.9rem', color: 'var(--accent)', fontWeight: 600 }}>&larr; Voltar ao Blog</Link>
         </div>
       </nav>
 
-      <article className="section" style={{ paddingTop: '6rem' }}>
-        <div className="container" style={{ maxWidth: '800px' }}>
-          <div className="animate-fade-in-up">
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-              <span style={{ color: 'var(--accent)', fontWeight: 'bold', textTransform: 'uppercase' }}>{displayPost.category}</span>
-              <span>•</span>
-              <span>{new Date(displayPost.created_at || new Date()).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
-              <span>•</span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: displayPost.source ? '#10b981' : 'var(--accent)' }}></span>
-                {displayPost.source || 'Athos AI'}
-              </span>
-            </div>
-            <h1 style={{ fontSize: '3rem', margin: '0 0 2rem 0', lineHeight: 1.1, fontWeight: 800 }}>{displayPost.title}</h1>
-            
-            <div style={{ position: 'relative', width: '100%', height: '400px', borderRadius: '16px', overflow: 'hidden', marginBottom: '3rem', background: '#1e293b' }}>
-              <Image 
+      <div className="container" style={{ paddingTop: '4rem', paddingBottom: '6rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '4rem', alignItems: 'start' }}>
+          
+          {/* Coluna Principal: Conteúdo */}
+          <article>
+            <header style={{ marginBottom: '3rem' }}>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1.5rem', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 700 }}>
+                <span style={{ color: 'var(--accent)' }}>{displayPost.category || 'Mercado'}</span>
+                <span style={{ opacity: 0.3 }}>|</span>
+                <span style={{ color: '#94a3b8' }}>{new Date(displayPost.created_at || new Date()).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
+              </div>
+              <h1 style={{ fontSize: '3.5rem', lineHeight: 1.1, fontWeight: 900, marginBottom: '2rem', letterSpacing: '-2px', color: '#fff', fontFamily: 'Outfit' }}>
+                {displayPost.title}
+              </h1>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#000' }}>A</div>
+                <div>
+                  <div style={{ fontSize: '0.95rem', fontWeight: 700 }}>{displayPost.source || 'Suno Notícias'}</div>
+                  <div style={{ fontSize: '0.8rem', opacity: 0.5 }}>Especialista Athos Financial</div>
+                </div>
+              </div>
+            </header>
+
+            <div style={{ position: 'relative', width: '100%', height: '450px', borderRadius: '24px', overflow: 'hidden', marginBottom: '3rem', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)', background: '#1e293b' }}>
+              <img 
                 src={displayPost.image?.startsWith('http') ? displayPost.image : 'https://images.unsplash.com/photo-1611974717482-982c7a6b444a?q=80&w=2070&auto=format&fit=crop'} 
                 alt={displayPost.title} 
-                fill 
-                style={{ objectFit: 'cover' }} 
-                unoptimized
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
               />
             </div>
-            
-            <div className="glass-panel" style={{ padding: '2rem', lineHeight: 1.8, color: 'var(--text-muted)' }}>
-              <p style={{ fontSize: '1.1rem', marginBottom: '1.5rem', color: 'var(--text-main)' }}>{displayPost.summary}</p>
-              <div dangerouslySetInnerHTML={{ __html: displayPost.content }} />
-            </div>
-            
-            {/* CTA Section */}
-            <div className="glass-panel" style={{ marginTop: '3rem', padding: '3rem', textAlign: 'center', background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.9) 100%)', border: '1px solid var(--accent)' }}>
-              <h3 style={{ fontSize: '1.8rem', marginBottom: '1rem', color: 'var(--text-main)', fontWeight: 800 }}>Sua empresa está perdendo dinheiro com processos financeiros desorganizados?</h3>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto 2rem auto', lineHeight: 1.6 }}>
-                A Athos oferece serviços de <strong>BPO Financeiro</strong> para tirar a dor de cabeça da sua rotina. Nós cuidamos das contas a pagar, receber, fluxo de caixa e conciliação bancária, enquanto você foca no que realmente importa: <strong>fazer o seu negócio crescer</strong>.
-              </p>
-              <Link href="/#servicos" className="btn btn-primary" style={{ padding: '1rem 2.5rem', fontSize: '1.1rem' }}>
-                Conheça Nossas Soluções
-              </Link>
-            </div>
 
-            {/* Related Posts Section */}
-            <div style={{ marginTop: '5rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '4rem' }}>
-              <h3 style={{ fontSize: '1.8rem', marginBottom: '2rem', fontWeight: 700 }}>Leia também</h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+            <div style={{ fontSize: '1.2rem', lineHeight: 1.8, color: '#cbd5e1', maxWidth: '100%' }}>
+              <p style={{ fontSize: '1.4rem', color: '#fff', fontWeight: 500, marginBottom: '2.5rem', lineHeight: 1.6, borderLeft: '4px solid var(--accent)', paddingLeft: '2rem' }}>
+                {displayPost.summary?.replace(/<[^>]*>/g, '')}
+              </p>
+              
+              <div 
+                className="post-content"
+                style={{ fontSize: '1.15rem' }}
+                dangerouslySetInnerHTML={{ __html: displayPost.content }} 
+              />
+            </div>
+          </article>
+
+          {/* Coluna Lateral: Sidebar */}
+          <aside style={{ position: 'sticky', top: '6rem' }}>
+            <div className="glass-panel" style={{ padding: '2rem', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.05)', background: 'rgba(30, 41, 59, 0.3)' }}>
+              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '1.5rem', color: '#fff', borderBottom: '2px solid var(--accent)', display: 'inline-block', paddingBottom: '5px' }}>
+                Relacionados
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 {siteContent.blog.posts
                   .filter(p => p.slug !== displayPost.slug)
                   .slice(0, 3)
-                  .map(relatedPost => (
-                    <div key={relatedPost.id} className="glass-panel" style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                      <div style={{ position: 'relative', width: '100%', height: '140px', borderRadius: '8px', overflow: 'hidden' }}>
-                        <Image src={relatedPost.image} alt={relatedPost.title} fill style={{ objectFit: 'cover' }} className="hover-scale" />
+                  .map(related => (
+                    <Link href={`/blog/${related.slug}`} key={related.id} style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                      <div style={{ width: '80px', height: '80px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden', background: '#1e293b' }}>
+                        <img src={related.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       </div>
-                      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                        <span style={{ color: 'var(--accent)', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>{relatedPost.category}</span>
-                        <h4 style={{ fontSize: '1.1rem', margin: '0 0 0.5rem 0', lineHeight: 1.3 }}>{relatedPost.title}</h4>
-                        <Link href={`/blog/${relatedPost.slug}`} style={{ marginTop: 'auto', color: '#3b82f6', fontSize: '0.9rem', fontWeight: 'bold' }}>
-                          Ler artigo &rarr;
-                        </Link>
-                      </div>
-                    </div>
-                ))}
+                      <h4 style={{ fontSize: '0.95rem', lineHeight: 1.3, fontWeight: 600, color: '#f1f5f9', margin: 0 }}>{related.title}</h4>
+                    </Link>
+                  ))
+                }
+              </div>
+
+              <div style={{ marginTop: '3rem', padding: '2rem', background: 'var(--accent)', borderRadius: '16px', color: '#000', textAlign: 'center' }}>
+                <h3 style={{ fontSize: '1.3rem', fontWeight: 900, marginBottom: '1rem' }}>Precisa de ajuda no seu financeiro?</h3>
+                <p style={{ fontSize: '0.9rem', marginBottom: '1.5rem', fontWeight: 500, opacity: 0.8 }}>Nós cuidamos da burocracia para você focar no lucro.</p>
+                <Link href="/#contato" className="btn" style={{ background: '#000', color: '#fff', width: '100%', display: 'block', padding: '0.8rem', borderRadius: '8px', fontWeight: 700 }}>Falar com Especialista</Link>
               </div>
             </div>
+          </aside>
 
-          </div>
         </div>
-      </article>
+      </div>
     </main>
   );
 }
