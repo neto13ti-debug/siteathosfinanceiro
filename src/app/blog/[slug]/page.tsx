@@ -80,7 +80,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
             <div style={{ position: 'relative', width: '100%', height: '500px', borderRadius: '28px', overflow: 'hidden', marginBottom: '4rem', boxShadow: '0 40px 80px -20px rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.05)' }}>
               <img 
-                src={displayPost.image?.includes('http') ? displayPost.image : 'https://images.unsplash.com/photo-1611974717482-982c7a6b444a?q=80&w=2070&auto=format&fit=crop'} 
+                src={displayPost.image?.includes('http') ? displayPost.image : 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop'} 
                 alt={displayPost.title} 
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
               />

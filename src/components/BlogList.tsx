@@ -76,7 +76,7 @@ export default function BlogList({ initialPosts }: { initialPosts: Post[] }) {
             background: '#1e293b'
           }}>
             <img 
-              src={post.image?.startsWith('http') ? post.image : 'https://images.unsplash.com/photo-1611974717482-982c7a6b444a?q=80&w=2070&auto=format&fit=crop'} 
+              src={post.image?.startsWith('http') ? post.image : 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?q=80&w=2070&auto=format&fit=crop'} 
               alt={post.title} 
               style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
               className="hover-scale"
