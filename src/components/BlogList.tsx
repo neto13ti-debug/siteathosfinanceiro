@@ -50,10 +50,17 @@ export default function BlogList({ initialPosts }: { initialPosts: Post[] }) {
     }
   };
 
-  // Função para limpar HTML e espaços do slug
+  // Função para limpar o slug de forma profunda
   const cleanSlug = (slug: string) => {
     if (!slug) return 'noticia-sem-link';
-    return slug.trim().replace(/\s+/g, '-').replace(/[()]/g, '');
+    return slug
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // Remove acentos
+      .replace(/[^\w\s-]/g, '')       // Remove caracteres especiais como $, %, ,
+      .replace(/\s+/g, '-')           // Troca espaços por traços
+      .replace(/-+/g, '-');           // Remove traços duplos
   };
 
   return (
