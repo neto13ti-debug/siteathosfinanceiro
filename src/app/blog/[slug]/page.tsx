@@ -2,6 +2,7 @@ import { siteContent } from '@/data/content';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 import BlogImage from '@/components/BlogImage';
+import FormattedDate from '@/components/FormattedDate';
 
 export const dynamic = 'force-dynamic';
 
@@ -49,6 +50,17 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
   return (
     <main style={{ background: '#fff', color: '#1e293b', minHeight: '100vh', fontFamily: "'Inter', sans-serif" }}>
+      <style dangerouslySetInnerHTML={{ __html: `
+        @media (max-width: 1024px) {
+          .news-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
+          .news-sidebar { display: none !important; }
+          .news-title { font-size: 2.2rem !important; letter-spacing: -1px !important; margin-bottom: 1.5rem !important; }
+          .news-container { padding-top: 2rem !important; padding-bottom: 4rem !important; }
+          .post-content-portal { font-size: 1.1rem !important; }
+          .container { padding: 0 1.5rem !important; }
+          .news-image-wrapper { height: 250px !important; margin-bottom: 2rem !important; }
+        }
+      `}} />
       <nav style={{ padding: '1rem 0', borderBottom: '1px solid rgba(0,0,0,0.05)', background: 'rgba(255, 255, 255, 0.95)', position: 'sticky', top: 0, zIndex: 100, backdropFilter: 'blur(10px)' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Link href="/blog" style={{ fontFamily: 'Outfit', fontWeight: 800, fontSize: '1.5rem', color: '#0f172a', display: 'flex', alignItems: 'center' }}>
@@ -58,8 +70,8 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         </div>
       </nav>
 
-      <div className="container" style={{ paddingTop: '5rem', paddingBottom: '8rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '5rem', alignItems: 'start' }}>
+      <div className="container news-container" style={{ paddingTop: '5rem', paddingBottom: '8rem' }}>
+        <div className="news-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '5rem', alignItems: 'start' }}>
           
           {/* Coluna Principal: Conteúdo */}
           <article>
@@ -67,9 +79,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '2rem', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 800 }}>
                 <span style={{ background: 'var(--accent)', color: '#000', padding: '2px 8px', borderRadius: '4px' }}>{displayPost.category || 'Mercado'}</span>
                 <span style={{ opacity: 0.2 }}>•</span>
-                <span style={{ color: '#64748b' }}>{new Date(displayPost.created_at || new Date()).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
+                <span style={{ color: '#64748b' }}><FormattedDate date={displayPost.created_at} /></span>
               </div>
-              <h1 style={{ fontSize: '3.8rem', lineHeight: 1.05, fontWeight: 900, marginBottom: '2.5rem', letterSpacing: '-3px', color: '#0f172a', fontFamily: 'Outfit' }}>
+              <h1 className="news-title" style={{ fontSize: '3.8rem', lineHeight: 1.05, fontWeight: 900, marginBottom: '2.5rem', letterSpacing: '-3px', color: '#0f172a', fontFamily: 'Outfit' }}>
                 {displayPost.title}
               </h1>
               <div style={{ display: 'flex', alignItems: 'center', gap: '15px', padding: '1.5rem', borderRadius: '16px', background: '#f8fafc', border: '1px solid #f1f5f9' }}>
@@ -81,23 +93,58 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
               </div>
             </header>
 
-            <div style={{ position: 'relative', width: '100%', height: '500px', borderRadius: '28px', overflow: 'hidden', marginBottom: '4rem', boxShadow: '0 40px 80px -20px rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.05)' }}>
+            <div className="news-image-wrapper" style={{ position: 'relative', width: '100%', height: '500px', borderRadius: '28px', overflow: 'hidden', marginBottom: '4rem', boxShadow: '0 40px 80px -20px rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.05)' }}>
               <BlogImage 
                 src={displayPost.image} 
                 alt={displayPost.title} 
                 fallback={`https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop&sig=${displayPost.id}`}
+                secondary={displayPost.content}
+                title={displayPost.title}
               />
             </div>
 
-            <div style={{ fontSize: '1.3rem', lineHeight: 2, color: '#1e293b', maxWidth: '100%', textAlign: 'justify' }}>
+            <div style={{ fontSize: '1.25rem', lineHeight: 1.8, color: '#1e293b', maxWidth: '100%', textAlign: 'left' }}>
               <div 
                 className="post-content-portal"
-                style={{ textAlign: 'justify' }}
                 dangerouslySetInnerHTML={{ 
-                  __html: displayPost.content
-                    ?.replace(/Foto:/g, '<br/><br/><div style="background: #f1f5f9; padding: 10px 20px; border-radius: 8px; font-size: 0.9rem; color: #64748b; font-style: italic; margin-bottom: 30px;">Foto:')
-                    .replace(/Divulgação\//g, 'Divulgação/</div><br/>')
-                    .replace(/<p>/g, '<p style="margin-bottom: 2.5rem;">')
+                  __html: (() => {
+                    let content = (displayPost.content || displayPost.summary || '')
+                      .replace(/srcset="[^"]*"/g, '')
+                      .replace(/sizes="[^"]*"/g, '')
+                      .replace(/class="[^"]*"/g, '')
+                      .replace(/loading="[^"]*"/g, '')
+                      .replace(/decoding="[^"]*"/g, '')
+                      .replace(/Facebook\." \/>/g, '') // Remove o resíduo específico do print
+                      .replace(/>\s*Tyson Foods\./g, '>') // Remove repetições estranhas
+                      .replace(/\s+src="[^"]*"/g, (match) => {
+                         // Mantém o src apenas se não for dentro de um bloco já quebrado
+                         return match;
+                      });
+                    
+                    // Remove tags vazias ou quebradas que sobram no topo
+                    content = content.replace(/<img[^>]*\/>/g, ''); 
+                    content = content.replace(/<img[^>]*>/g, '');
+
+                    // Se não tiver tags HTML básicas, vamos formatar o texto puro
+                    if (!content.includes('<p>') && !content.includes('<h2>')) {
+                      content = content
+                        .split('\n')
+                        .filter(line => line.trim() !== '')
+                        .map((line, index) => {
+                          // Se a linha for curta e estiver no começo ou entre blocos, tratamos como subtítulo
+                          if (line.length < 100 && (index === 0 || line.includes(':'))) {
+                            return `<h3 style="color: #0f172a; margin-top: 2.5rem; margin-bottom: 1.5rem; font-weight: 800; font-size: 1.6rem;">${line}</h3>`;
+                          }
+                          return `<p style="margin-bottom: 1.8rem;">${line}</p>`;
+                        })
+                        .join('');
+                    }
+
+                    return content
+                      .replace(/Foto:/g, '<br/><br/><div style="background: #f1f5f9; padding: 10px 20px; border-radius: 8px; font-size: 0.9rem; color: #64748b; font-style: italic; margin-bottom: 30px;">Foto:')
+                      .replace(/Divulgação\//g, 'Divulgação/</div><br/>')
+                      .replace(/<p>/g, '<p style="margin-bottom: 2rem;">');
+                  })()
                 }} 
               />
             </div>
@@ -110,7 +157,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
           </article>
 
           {/* Coluna Lateral: Sidebar */}
-          <aside style={{ position: 'sticky', top: '7rem' }}>
+          <aside className="news-sidebar" style={{ position: 'sticky', top: '7rem' }}>
             <div style={{ padding: '2.5rem', borderRadius: '24px', border: '1px solid #f1f5f9', background: '#fff', boxShadow: '0 20px 40px rgba(0,0,0,0.05)' }}>
               
               {/* Espaço para Propaganda Lateral */}

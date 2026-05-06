@@ -4,12 +4,15 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
+import { cleanSlug } from '@/lib/utils';
+import BlogImage from './BlogImage';
 
 interface Post {
   id: string;
   slug: string;
   title: string;
   summary: string;
+  content?: string;
   category: string;
   image: string;
   created_at: string;
@@ -50,19 +53,6 @@ export default function BlogList({ initialPosts }: { initialPosts: Post[] }) {
     }
   };
 
-  // Função para limpar o slug de forma profunda
-  const cleanSlug = (slug: string) => {
-    if (!slug) return 'noticia-sem-link';
-    return slug
-      .toLowerCase()
-      .trim()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // Remove acentos
-      .replace(/[^\w\s-]/g, '')       // Remove caracteres especiais como $, %, ,
-      .replace(/\s+/g, '-')           // Troca espaços por traços
-      .replace(/-+/g, '-');           // Remove traços duplos
-  };
-
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '3rem' }}>
       {posts.map((post) => (
@@ -82,12 +72,12 @@ export default function BlogList({ initialPosts }: { initialPosts: Post[] }) {
             boxShadow: '0 20px 25px -5px rgba(0,0,0,0.3)',
             background: '#1e293b'
           }}>
-            <img 
-              src={post.image?.startsWith('http') ? post.image : `https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop&sig=${post.id}`} 
+            <BlogImage 
+              src={post.image} 
               alt={post.title} 
-              style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.5s ease' }}
-              className="hover-scale"
-              onError={(e: any) => e.target.src = `https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop&sig=${post.id}`}
+              fallback={`https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2426&auto=format&fit=crop&sig=${post.id}`}
+              secondary={post.content || post.summary}
+              title={post.title}
             />
             <div style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'var(--accent)', color: '#000', padding: '0.3rem 1rem', borderRadius: '6px', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase' }}>
               {post.category || 'Mercado'}
